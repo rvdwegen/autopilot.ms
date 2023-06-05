@@ -1,4 +1,5 @@
 $ProgressPreference = 'SilentlyContinue'
+$host.ui.RawUI.WindowTitle = "Autopilot Hash Bootstrap"
 CLS
 
 $script = @"
