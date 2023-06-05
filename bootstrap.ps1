@@ -21,11 +21,11 @@ Write-Host $script
 # Self-elevate the script if required
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
         Write-Host "Auto-elevating process..."
-        $CommandLine = '-noexit iwr "u.vdwegen.app/autopilot" | iex'
+        $CommandLine = '-noexit iwr "autopilot.ms" | iex'
         Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
         exit
 }
 
-$ScriptData = 'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false; iwr "https://raw.githubusercontent.com/rvdwegen/Powershell/main/autopilot.ps1" | iex {ENTER}'
+$ScriptData = 'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false; iwr "https://raw.githubusercontent.com/rvdwegen/autopilot.ms/main/autopilot.ps1" | iex {ENTER}'
 $wshell = New-Object -ComObject wscript.shell
 $wshell.SendKeys($ScriptData)
