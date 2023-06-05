@@ -27,6 +27,6 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
         exit
 }
 
-$ScriptData = 'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false; iwr "https://raw.githubusercontent.com/rvdwegen/autopilot.ms/main/autopilot.ps1" | iex {ENTER}'
+$ScriptData = 'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false; irm "https://raw.githubusercontent.com/rvdwegen/autopilot.ms/main/autopilot.ps1" | iex {ENTER}'
 $wshell = New-Object -ComObject wscript.shell
 $wshell.SendKeys($ScriptData)
