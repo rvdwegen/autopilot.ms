@@ -1,7 +1,7 @@
 {
     "routes": [
         {
-            "route": "/*",
+            "route": "/",
             "redirect": "https://raw.githubusercontent.com/rvdwegen/autopilot.ms/main/bootstrap.ps1",
             "statusCode": 301
         }
