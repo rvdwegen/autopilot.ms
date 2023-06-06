@@ -32,7 +32,7 @@ function Save-File ([string]$filename) {
 
 $SerialNumber = (Get-WmiObject win32_bios | select Serialnumber).SerialNumber
 
-Write-Host "Installing dependencies..."
+Write-Host "Checking dependencies..."
 if (!(Get-InstalledScript).Name -eq "Get-WindowsAutoPilotInfo" ) { Install-Script -name Get-WindowsAutopilotInfo -Force }
 
 Write-Host "Retrieving Autpilot Hash..."
