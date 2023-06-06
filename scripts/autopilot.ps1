@@ -46,7 +46,7 @@ try {
 
 try {
     $savePath = (Save-File -filename $serialNumber)
-    if ($savePath -notlike "[a-zA-Z]:") { throw "Invalid save location selected at: $savePath" }
+    if ($savePath -notlike "^[a-zA-Z]:*") { throw "Invalid save location selected at: $savePath" }
     $hashFileDetails | Export-Csv -Path $savePath -Force -NoTypeInformation
 
     if (Test-Path -Path $savePath) {
