@@ -13,7 +13,8 @@ $script = @"
                                                  
                                                 
                       ============ Autopilot hash bootstrap ============                      
-                                  Author: Roel van der Wegen
+                             Author: https://github.com/rvdwegen
+                        Repo: https://github.com/rvdwegen/autopilot.ms
 
 "@
 
