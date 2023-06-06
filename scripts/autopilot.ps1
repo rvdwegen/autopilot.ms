@@ -30,10 +30,35 @@ function Save-File ([string]$filename) {
     return $OpenFileDialog.filename
 }
 
-$SerialNumber = (Get-WmiObject win32_bios | select Serialnumber).SerialNumber
+try {
+ 
+    $serialNumber = (Get-CimInstance -Class Win32_BIOS).SerialNumber
+    $hardwareHash = (Get-CimInstance -Namespace root/cimv2/mdm/dmmap -Class MDM_DevDetail_Ext01 -Filter "InstanceID='Ext' AND ParentID='./DevDetail'").DeviceHardwareData
 
-Write-Host "Checking dependencies..."
-if (!(Get-InstalledScript).Name -eq "Get-WindowsAutoPilotInfo" ) { Install-Script -name Get-WindowsAutopilotInfo -Force }
+    $hashFileDetails = [pscustomobject]@{
+        "Device Serial Number" = $serialNumber
+        "Windows Product ID" = $product
+        "Hardware Hash" = $hardwareHash
+    }
+} catch {
+    throw "Unable to gather hash file details: $($_.Exception.Message)"
+}
 
-Write-Host "Retrieving Autpilot Hash..."
-Get-WindowsAutopilotInfo -OutputFile (Save-File -filename $SerialNumber)
+try {
+    $savePath = (Save-File -filename $serialNumber)
+    $hashFileDetails | Export-Csv -Path $savePath -Force -NoTypeInformation
+
+    if (Test-Path -Path $savePath) {
+        Write-Host "Hash file for device $serialNumber saved to $savePath"
+    }
+} catch {
+    throw "Unable to save hash file: $($_.Exception.Message)"
+}
+
+#$SerialNumber = (Get-WmiObject win32_bios | select Serialnumber).SerialNumber
+
+#Write-Host "Checking dependencies..."
+#if (!(Get-InstalledScript).Name -eq "Get-WindowsAutoPilotInfo" ) { Install-Script -name Get-WindowsAutopilotInfo -Force }
+
+#Write-Host "Retrieving Autpilot Hash..."
+#Get-WindowsAutopilotInfo -OutputFile (Save-File -filename $SerialNumber)
