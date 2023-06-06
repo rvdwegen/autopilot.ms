@@ -28,7 +28,7 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
         exit
 }
 
-$ScriptData = 'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false; irm "https://raw.githubusercontent.com/rvdwegen/autopilot.ms/main/autopilot.ps1" | iex {ENTER}'
+$ScriptData = 'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false; irm "https://autopilot.ms/autopilot.ps1" | iex {ENTER}'
 $wshell = New-Object -ComObject wscript.shell
 [void]$wshell.AppActivate('Autopilot Hash Bootstrap')
 $wshell.SendKeys($ScriptData)
