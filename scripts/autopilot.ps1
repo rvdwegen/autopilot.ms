@@ -11,7 +11,7 @@ $script = @"
                          |_|                                                           |_|    
                                                  
                                                 
-                      ============ Autopilot hash bootstrap ============                      
+                      ============ Autopilot hash bootstrap2 ============                      
                                   Author: Roel van der Wegen
 
 "@
