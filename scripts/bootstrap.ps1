@@ -12,7 +12,7 @@ $script = @"
                          |_|                                                           |_|    
                                                  
                                                 
-                      ============ Autopilot hash bootstrap ============                      
+                      ============ Autopilot hash bootstrap1 ============                      
                                   Author: Roel van der Wegen
 
 "@
@@ -23,12 +23,12 @@ Write-Host $script
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
         Write-Host "Auto-elevating process..."
         #$CommandLine = '-noexit iwr -useb autopilot.ms | iex'
-        $CommandLine = '-noexit irm autopilot.ms | iex'
+        $CommandLine = '-noexit irm "https://autopilot.ms/scripts/bootstrap.ps1" | iex'
         Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
         exit
 }
 
-$ScriptData = 'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false; irm "https://autopilot.ms/autopilot.ps1" | iex {ENTER}'
+$ScriptData = 'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false; irm "https://autopilot.ms/scripts/autopilot.ps1" | iex {ENTER}'
 $wshell = New-Object -ComObject wscript.shell
 [void]$wshell.AppActivate('Autopilot Hash Bootstrap')
 $wshell.SendKeys($ScriptData)
