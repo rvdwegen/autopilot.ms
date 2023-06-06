@@ -22,7 +22,6 @@ Write-Host $script
 # Self-elevate the script if required
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
         Write-Host "Auto-elevating process..."
-        #$CommandLine = '-noexit iwr -useb autopilot.ms | iex'
         $CommandLine = '-noexit irm "https://autopilot.ms/scripts/bootstrap.ps1" | iex'
         Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
         exit
