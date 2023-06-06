@@ -32,7 +32,6 @@ function Save-File ([string]$filename) {
 }
 
 try {
- 
     $serialNumber = (Get-CimInstance -Class Win32_BIOS).SerialNumber
     $hardwareHash = (Get-CimInstance -Namespace root/cimv2/mdm/dmmap -Class MDM_DevDetail_Ext01 -Filter "InstanceID='Ext' AND ParentID='./DevDetail'").DeviceHardwareData
 
@@ -46,7 +45,7 @@ try {
 }
 
 try {
-    $savePath = (Save-File -filename $serialNumber)
+    if ($savePath = (Save-File -filename $serialNumber) -notlike "[a-zA-Z]:") { throw "Invalid save location selected at: $savePath" }
     $hashFileDetails | Export-Csv -Path $savePath -Force -NoTypeInformation
 
     if (Test-Path -Path $savePath) {
@@ -55,11 +54,3 @@ try {
 } catch {
     throw "Unable to save hash file: $($_.Exception.Message)"
 }
-
-#$SerialNumber = (Get-WmiObject win32_bios | select Serialnumber).SerialNumber
-
-#Write-Host "Checking dependencies..."
-#if (!(Get-InstalledScript).Name -eq "Get-WindowsAutoPilotInfo" ) { Install-Script -name Get-WindowsAutopilotInfo -Force }
-
-#Write-Host "Retrieving Autpilot Hash..."
-#Get-WindowsAutopilotInfo -OutputFile (Save-File -filename $SerialNumber)
