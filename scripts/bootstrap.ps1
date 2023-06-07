@@ -2,7 +2,7 @@ $ProgressPreference = 'SilentlyContinue'
 $host.ui.RawUI.WindowTitle = "Autopilot Hash Bootstrap"
 CLS
 
-$script = @"
+$header = @"
                                                 
        _         _              _ _       _     ____              _       _                   
       / \  _   _| |_ ___  _ __ (_) | ___ | |_  | __ )  ___   ___ | |_ ___| |_ _ __ __ _ _ __  
@@ -18,7 +18,7 @@ $script = @"
 
 "@
 
-Write-Host $script
+Write-Host $header
 
 # Self-elevate the script if required
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
