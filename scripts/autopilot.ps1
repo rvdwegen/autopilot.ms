@@ -1,7 +1,7 @@
 $ProgressPreference = 'SilentlyContinue'
 CLS
 
-$script = @"
+$header = @"
                                                 
        _         _              _ _       _     ____              _       _                   
       / \  _   _| |_ ___  _ __ (_) | ___ | |_  | __ )  ___   ___ | |_ ___| |_ _ __ __ _ _ __  
@@ -17,7 +17,7 @@ $script = @"
 
 "@
 
-Write-Host $script
+Write-Host $header
 
 function Save-File ([string]$filename) {
     [void][System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms")
