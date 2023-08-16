@@ -56,7 +56,7 @@ do {
         '1' {
             irm "https://autopilot.ms/scripts/autopilot.ps1" | iex
         } '2' {
-            Write-Host "not functional yet"
+            irm "https://autopilot.ms/scripts/getwindowsautopilotscript.ps1" | iex
         }
     }
 }
