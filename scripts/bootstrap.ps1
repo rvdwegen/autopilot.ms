@@ -7,11 +7,13 @@ function Show-Menu {
     )
     Clear-Host
     Write-Host $header
+    Write-Host "                                        "
     Write-Host "================ $Title ================"
-    
+    Write-Host "                                        "
     Write-Host "1: Press '1' to export the hash to CSV."
-    Write-Host "                                       "
+    Write-Host "                                        "
     Write-Host "2: Press '2' to download Get-WindowsAutopilotInfo from the gallery."
+    Write-Host "                                        "
 }
 
 Clear-Host
