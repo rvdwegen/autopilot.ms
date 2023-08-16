@@ -1,6 +1,11 @@
 $ProgressPreference = 'SilentlyContinue'
 $host.ui.RawUI.WindowTitle = "Autopilot Hash Bootstrap"
 
+$ScriptData = 'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false {ENTER}'
+$wshell = New-Object -ComObject wscript.shell
+[void]$wshell.AppActivate('Autopilot Hash Bootstrap')
+$wshell.SendKeys($ScriptData)
+
 $header = @"
                                                 
        _         _              _ _       _     ____              _       _                   
@@ -20,18 +25,5 @@ $header = @"
 CLS
 
 Write-Host $header
-
-# Self-elevate the script if required
-if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
-        Write-Host "Auto-elevating process..."
-        $CommandLine = '-noexit irm "https://autopilot.ms/scripts/bootstrap.ps1" | iex'
-        Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
-        exit
-}
-
-$ScriptData = 'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false {ENTER}'
-$wshell = New-Object -ComObject wscript.shell
-[void]$wshell.AppActivate('Autopilot Hash Bootstrap')
-$wshell.SendKeys($ScriptData)
 
 Write-Host "Under construction"
