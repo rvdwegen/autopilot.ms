@@ -12,7 +12,7 @@ function Show-Menu {
     Write-Host "1: Press '1' to export the hash to CSV."
     Write-Host "2: Press '2' to download Get-WindowsAutopilotInfo from the gallery."
     Write-Host "S: Press 'S' to shutdown the device."
-    Write-Host "Q: Press 'Q' to quit."
+    #Write-Host "Q: Press 'Q' to quit."
 }
 
 Clear-Host
@@ -60,8 +60,7 @@ do {
             Stop-Computer -ComputerName localhost
         }
     }
-    pause
 }
-until ($selection -eq 'q')
+until ("nothing")
 
 #irm "https://autopilot.ms/scripts/autopilot.ps1" | iex
