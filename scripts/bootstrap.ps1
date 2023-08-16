@@ -10,9 +10,8 @@ function Show-Menu {
     Write-Host "================ $Title ================"
     
     Write-Host "1: Press '1' to export the hash to CSV."
+    Write-Host "                                       "
     Write-Host "2: Press '2' to download Get-WindowsAutopilotInfo from the gallery."
-    Write-Host "S: Press 'S' to shutdown the device."
-    #Write-Host "Q: Press 'Q' to quit."
 }
 
 Clear-Host
@@ -56,8 +55,6 @@ do {
             irm "https://autopilot.ms/scripts/autopilot.ps1" | iex
         } '2' {
             Write-Host "not functional yet"
-        } 'S' {
-            Stop-Computer -ComputerName localhost
         }
     }
 }
