@@ -1,6 +1,19 @@
 $ProgressPreference = 'SilentlyContinue'
 $host.ui.RawUI.WindowTitle = "Autopilot Hash Bootstrap"
-CLS
+
+function Show-Menu {
+    param (
+        [string]$Title = 'Autopilot hash menu'
+    )
+    Clear-Host
+    Write-Host "================ $Title ================"
+    
+    Write-Host "1: Press '1' to export the hash to CSV."
+    Write-Host "2: Press '2' to download Get-WindowsAutopilotInfo from the gallery."
+    Write-Host "Q: Press 'Q' to quit."
+}
+
+Clear-Host
 
 $header = @"
                                                 
@@ -33,4 +46,18 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 #[void]$wshell.AppActivate('Autopilot Hash Bootstrap')
 #$wshell.SendKeys($ScriptData)
 
-irm "https://autopilot.ms/scripts/autopilot.ps1" | iex
+do {
+    Show-Menu
+    $selection = Read-Host "Please make a selection"
+    switch ($selection) {
+        '1' {
+            irm "https://autopilot.ms/scripts/autopilot.ps1" | iex
+        } '2' {
+            Write-Host "not functional yet"
+        }
+    }
+    pause
+}
+until ($selection -eq 'q')
+
+#irm "https://autopilot.ms/scripts/autopilot.ps1" | iex
