@@ -17,6 +17,8 @@ $header = @"
 
 "@
 
+CLS
+
 Write-Host $header
 
 # Self-elevate the script if required
