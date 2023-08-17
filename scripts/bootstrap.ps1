@@ -56,5 +56,3 @@ do {
     }
 }
 until ("nothing")
-
-#irm "https://autopilot.ms/scripts/autopilot.ps1" | iex
