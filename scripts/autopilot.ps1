@@ -50,8 +50,7 @@ try {
 try {
     $savePath = (Save-File -filename $serialNumber)
     if ($savePath.status -eq "OK") {
-        #$hashFileDetails | Export-Csv -Path $savePath.path -Force -NoTypeInformation
-        $hashFileDetails | ConvertTo-CSV -NoTypeInformation | % {$_ -replace '"',''} | Out-File $savePath
+        $hashFileDetails | ConvertTo-CSV -NoTypeInformation | % {$_ -replace '"',''} | Out-File $savePath.path
     
         if (Test-Path -Path $savePath.path) {
             Write-Host "Hash file for device $serialNumber saved to $($savePath.path)" -ForegroundColor Green
