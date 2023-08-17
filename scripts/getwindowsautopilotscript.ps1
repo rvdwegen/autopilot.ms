@@ -32,8 +32,12 @@ if (!(Get-PackageProvider | Where-Object { $_.Name -eq "NuGet" })) {
 
 if (!(Get-InstalledScript | Where-Object { $_.Name -eq "Get-WindowsAutopilotInfo" })) {
     Install-Script -Name "Get-WindowsAutopilotInfo" -Force -Confirm:$FALSE
+    Write-Host "Get-WindowsAutopilotInfo has been succesfully installed" -ForegroundColor Green
+} else {
+    Write-Host "Get-WindowsAutopilotInfo has been found" -ForegroundColor Green
 }
 
+Write-Host "          "
 Write-Host "Command examples:"
 Write-Host "          "
 Write-Host " - Upload hash directly to tenant (requires admin credentials): Get-WindowsAutopilotInfo -Online"
