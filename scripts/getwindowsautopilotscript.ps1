@@ -37,6 +37,11 @@ if (!(Get-InstalledScript | Where-Object { $_.Name -eq "Get-WindowsAutopilotInfo
     Write-Host "Get-WindowsAutopilotInfo has been found" -ForegroundColor Green
 }
 
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false
+
+Write-Host "          "
+Write-Host "Please change the executionpolicy first:"
+Write-Host "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false"
 Write-Host "          "
 Write-Host "Command examples:"
 Write-Host "          "
