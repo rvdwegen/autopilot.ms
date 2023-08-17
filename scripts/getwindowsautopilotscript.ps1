@@ -41,9 +41,7 @@ Write-Host "Command examples:"
 Write-Host "          "
 Write-Host " - Upload hash directly to tenant (requires admin credentials): Get-WindowsAutopilotInfo -Online"
 Write-Host "          "
-Write-Host " - Thing: Get-WindowsAutopilotInfo -Online sdfsdfsf"
-Write-Host "          "
-Write-Host " - Thing2: Get-WindowsAutopilotInfo -Online sfdsfsadfasdfadsa"
+Write-Host " - Get help: Get-WindowsAutopilotInfo -?"
 Write-Host "          "
 
 
