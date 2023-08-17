@@ -1,11 +1,6 @@
 $ProgressPreference = 'SilentlyContinue'
 $host.ui.RawUI.WindowTitle = "Autopilot Hash Bootstrap"
 
-$ScriptData = 'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false {ENTER}'
-$wshell = New-Object -ComObject wscript.shell
-[void]$wshell.AppActivate('Autopilot Hash Bootstrap')
-#$wshell.SendKeys($ScriptData)
-
 $header = @"
                                                 
        _         _              _ _       _     ____              _       _                   
@@ -33,11 +28,13 @@ if (!(Get-PackageProvider | Where-Object { $_.Name -eq "NuGet" })) {
 if (!(Get-InstalledScript | Where-Object { $_.Name -eq "Get-WindowsAutopilotInfo" })) {
     Install-Script -Name "Get-WindowsAutopilotInfo" -Force -Confirm:$FALSE
     Write-Host "Get-WindowsAutopilotInfo has been succesfully installed" -ForegroundColor Green
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false
+    Write-Host "Executionpolicy has been changed to unrestricted for this process" -ForegroundColor Green
 } else {
     Write-Host "Get-WindowsAutopilotInfo has been found" -ForegroundColor Green
+    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false
+    Write-Host "Executionpolicy has been changed to unrestricted for this process" -ForegroundColor Green
 }
-
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false
 
 Write-Host "          "
 Write-Host "Please change the executionpolicy first:"
