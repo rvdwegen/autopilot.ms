@@ -29,7 +29,7 @@ function Save-File ([string]$filename) {
     $result = $OpenFileDialog.ShowDialog()
 
     return [pscustomobject]@{
-        filename = $OpenFileDialog.filename
+        path = $OpenFileDialog.filename
         status = $result
     }
 }
@@ -50,11 +50,11 @@ try {
 try {
     $savePath = (Save-File -filename $serialNumber)
     if ($savePath.status -eq "OK") {
-        #$hashFileDetails | Export-Csv -Path $savePath -Force -NoTypeInformation
+        #$hashFileDetails | Export-Csv -Path $savePath.path -Force -NoTypeInformation
         $hashFileDetails | ConvertTo-CSV -NoTypeInformation | % {$_ -replace '"',''} | Out-File $savePath
     
-        if (Test-Path -Path $savePath) {
-            Write-Host "Hash file for device $serialNumber saved to $savePath" -ForegroundColor Green
+        if (Test-Path -Path $savePath.path) {
+            Write-Host "Hash file for device $serialNumber saved to $($savePath.path)" -ForegroundColor Green
         }
     } else {
         throw "No file save location selected"
