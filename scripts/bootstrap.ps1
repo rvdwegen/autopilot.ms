@@ -44,11 +44,6 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
         exit
 }
 
-#$ScriptData = 'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false {ENTER}'
-#$wshell = New-Object -ComObject wscript.shell
-#[void]$wshell.AppActivate('Autopilot Hash Bootstrap')
-#$wshell.SendKeys($ScriptData)
-
 do {
     Show-Menu
     $selection = Read-Host "Please make a selection"
