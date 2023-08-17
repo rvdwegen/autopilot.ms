@@ -22,7 +22,7 @@ CLS
 Write-Host $header
 
 if (!(Get-PackageProvider | Where-Object { $_.Name -eq "NuGet" })) {
-    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Confirm:$FALSE
+    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Confirm:$FALSE | Out-Null
 }
 
 if (!(Get-InstalledScript | Where-Object { $_.Name -eq "Get-WindowsAutopilotInfo" })) {
