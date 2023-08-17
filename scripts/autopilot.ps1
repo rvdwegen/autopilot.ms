@@ -48,10 +48,6 @@ try {
     $savePath = (Save-File -filename $serialNumber)
     #$hashFileDetails | Export-Csv -Path $savePath -Force -NoTypeInformation
     $hashFileDetails | ConvertTo-CSV -NoTypeInformation | % {$_ -replace '"',''} | Out-File $savePath
-
-    #if (Test-Path -Path $savePath) {
-    #    Write-Host "Hash file for device $serialNumber saved to $savePath"
-    #}
 } catch {
     throw "Unable to save hash file: $($_.Exception.Message)"
 }
