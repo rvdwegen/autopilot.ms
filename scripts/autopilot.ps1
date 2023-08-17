@@ -26,9 +26,12 @@ function Save-File ([string]$filename) {
     $OpenFileDialog.initialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
     $OpenFileDialog.filter = 'CSV (*.csv)|*.csv'
     $OpenFileDialog.FileName = "$filename.csv"
-    [void]$OpenFileDialog.ShowDialog()
+    $result = $OpenFileDialog.ShowDialog()
 
-    return $OpenFileDialog.filename
+    return [pscustomobject]@{
+        filename = $OpenFileDialog.filename
+        status = $result
+    }
 }
 
 try {
@@ -46,11 +49,15 @@ try {
 
 try {
     $savePath = (Save-File -filename $serialNumber)
-    #$hashFileDetails | Export-Csv -Path $savePath -Force -NoTypeInformation
-    $hashFileDetails | ConvertTo-CSV -NoTypeInformation | % {$_ -replace '"',''} | Out-File $savePath
-
-    if (Test-Path -Path $savePath) {
-        Write-Host "Hash file for device $serialNumber saved to $savePath" -ForegroundColor Green
+    if ($savePath.status -eq "OK") {
+        #$hashFileDetails | Export-Csv -Path $savePath -Force -NoTypeInformation
+        $hashFileDetails | ConvertTo-CSV -NoTypeInformation | % {$_ -replace '"',''} | Out-File $savePath
+    
+        if (Test-Path -Path $savePath) {
+            Write-Host "Hash file for device $serialNumber saved to $savePath" -ForegroundColor Green
+        }
+    } else {
+        throw "No file save location selected"
     }
 } catch {
     throw "Unable to save hash file: $($_.Exception.Message)"
