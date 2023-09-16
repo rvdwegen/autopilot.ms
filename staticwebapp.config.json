@@ -3,7 +3,7 @@
         {
             "route": "/",
             "redirect": "/scripts/bootstrap.ps1",
-            "statusCode": 301
+            "statusCode": 302
         }
     ]
 }
