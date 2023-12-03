@@ -23,13 +23,13 @@ Write-Host $header
 
 #region
 
-function Save-File ([string]$filename) {
+function Save-File ([string]$fileName, [string]$folderPath) {
        [void][System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms")
    
        $OpenFileDialog = New-Object System.Windows.Forms.SaveFileDialog
-       $OpenFileDialog.initialDirectory = "C:\Windows\Provisioning\Autopilot"
+       $OpenFileDialog.initialDirectory = $folderPath
        $OpenFileDialog.filter = 'JSON (*.json)|*.json'
-       $OpenFileDialog.FileName = "$filename.json"
+       $OpenFileDialog.FileName = "$fileName.json"
        $result = $OpenFileDialog.ShowDialog()
    
        if ($result -NE "OK") { throw "Failed to select save location" }
@@ -112,12 +112,94 @@ try {
        $tenantId = $tenantInfo.id
        $defaultDomain = ($tenantInfo.verifiedDomains | Where-Object { $_.isDefault -eq $true }).name
        $profile = (Invoke-RestMethod -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/windowsAutopilotDeploymentProfiles?`filter=(extractHardwareHash eq true)" -Headers $header).value
+       if ($profile.Count -gt 1) {
+              $profile = Out-GridView -InputObject $profile -Title "More than 1 profile detected, select profile" # No clue if this works, can't quickly test it, here just in case
+       }
 } catch {
        throw "$($_.Exception.Message)"
 }
 
 try {
-       $saveFile = Save-File -filename "AutoPilotConfigurationFile"
-} catch {
 
+       ###################################################################################
+       $oobeSettings = $profile.outOfBoxExperienceSettings
+
+       # Build up properties
+       $json = @{}
+       $json.Add("Comment_File", "Profile $($profile.displayName)")
+       $json.Add("Version", 2049)
+       $json.Add("ZtdCorrelationId", $profile.id)
+       if ($profile."@odata.type" -eq "#microsoft.graph.activeDirectoryWindowsAutopilotDeploymentProfile") {
+           $json.Add("CloudAssignedDomainJoinMethod", 1)
+       } else {
+           $json.Add("CloudAssignedDomainJoinMethod", 0)
+       }
+       if ($profile.deviceNameTemplate) {
+           $json.Add("CloudAssignedDeviceName", $profile.deviceNameTemplate)
+       }
+   
+       # Figure out config value
+       $oobeConfig = 8 + 256
+       if ($oobeSettings.userType -eq 'standard') {
+           $oobeConfig += 2
+       }
+       if ($oobeSettings.hidePrivacySettings -eq $true) {
+           $oobeConfig += 4
+       }
+       if ($oobeSettings.hideEULA -eq $true) {
+           $oobeConfig += 16
+       }
+       if ($oobeSettings.skipKeyboardSelectionPage -eq $true) {
+              $oobeConfig += 1024
+              if ($profile.language) {
+                     $json.Add("CloudAssignedLanguage", $profile.language)
+              }
+       }
+       if ($oobeSettings.deviceUsageType -eq 'shared') {
+           $oobeConfig += 32 + 64
+       }
+       $json.Add("CloudAssignedOobeConfig", $oobeConfig)
+   
+       # Set the forced enrollment setting
+       if ($oobeSettings.hideEscapeLink -eq $true) {
+           $json.Add("CloudAssignedForcedEnrollment", 1)
+       } else {
+           $json.Add("CloudAssignedForcedEnrollment", 0)
+       }
+   
+       $json.Add("CloudAssignedTenantId", $tenantId)
+       $json.Add("CloudAssignedTenantDomain", $defaultDomain)
+       $embedded = @{}
+       $embedded.Add("CloudAssignedTenantDomain", $defaultDomain)
+       $embedded.Add("CloudAssignedTenantUpn", "")
+       if ($oobeSettings.hideEscapeLink -eq $true) {
+           $embedded.Add("ForcedEnrollment", 1)
+       } else
+       {
+           $embedded.Add("ForcedEnrollment", 0)
+       }
+       $ztc = @{}
+       $ztc.Add("ZeroTouchConfig", $embedded)
+       $json.Add("CloudAssignedAadServerData", (ConvertTo-JSON $ztc -Compress))
+   
+       # Skip connectivity check
+       if ($profile.hybridAzureADJoinSkipConnectivityCheck -eq $true) {
+           $json.Add("HybridJoinSkipDCConnectivityCheck", 1)
+       }
+   
+       # Hard-code properties not represented in Intune
+       $json.Add("CloudAssignedAutopilotUpdateDisabled", 1)
+       $json.Add("CloudAssignedAutopilotUpdateTimeout", 1800000)
+
+       ###################################################################################
+
+} catch {
+       throw "Failed to generate Autopilot JSON file: $($_.Exception.Message)"
+}
+
+try {
+       $saveFilePath = Save-File -fileName "AutoPilotConfigurationFile" -folderPath (Join-Path -Path $env:windir -ChildPath "Provisioning\Autopilot")
+       $json | ConvertTo-Json -Depth 20 | Out-File -FilePath $saveFilePath.Path -Encoding ASCII
+} catch {
+       throw "Failed to save file: $($_.Exception.Message)"
 }
