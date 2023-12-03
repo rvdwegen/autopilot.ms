@@ -23,7 +23,7 @@ Write-Host $header
 
 try {
        # Change execution policy
-       if (Get-ExecutionPolicy -ne "Unrestricted") {
+       if ((Get-ExecutionPolicy) -ne "Unrestricted") {
               Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false
               Write-Host "Executionpolicy has been changed to unrestricted for this process" -ForegroundColor Green
        }
