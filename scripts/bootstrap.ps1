@@ -10,11 +10,11 @@ function Show-Menu {
     Write-Host "                                        "
     Write-Host "================ $Title ================"
     Write-Host "                                        "
-    Write-Host "1: Press '1' to export the hash to CSV."
+    Write-Host "1: Select '1' to export the hash to CSV."
     Write-Host "                                        "
-    Write-Host "2: Press '2' to download Get-WindowsAutopilotInfo from the gallery."
+    Write-Host "2: Select '2' to download Get-WindowsAutopilotInfo from the gallery."
     Write-Host "                                        "
-    Write-Host "3: Press '3' to IN DEVELOPMENT."
+    Write-Host "3: Select '3' to IN DEVELOPMENT."
     Write-Host "                                        "
 }
 
@@ -51,11 +51,11 @@ do {
     $selection = Read-Host "Please make a selection"
     switch ($selection) {
         '1' {
-            irm "https://autopilot.ms/scripts/autopilot.ps1" | iex
+            Invoke-RestMethod "https://autopilot.ms/scripts/autopilot.ps1" | Invoke-Expression
         } '2' {
-            irm "https://autopilot.ms/scripts/getwindowsautopilotscript.ps1" | iex
+            Invoke-RestMethod "https://autopilot.ms/scripts/getwindowsautopilotscript.ps1" | Invoke-Expression
         } '3' {
-            irm "https://autopilot.ms/scripts/tobenamedlater.ps1" | iex
+            Invoke-RestMethod "https://autopilot.ms/scripts/tobenamedlater.ps1" | Invoke-Expression
         }
     }
 }

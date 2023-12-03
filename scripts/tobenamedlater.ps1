@@ -29,14 +29,18 @@ try {
        }
 
        # Install PackageProvider NuGet
-       if (!(Get-PackageProvider | Where-Object { $_.Name -eq "NuGet" })) {
-              Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Confirm:$FALSE | Out-Null
+       try {
+              if (!(Get-PackageProvider | Where-Object { $_.Name -eq "NuGet" })) {
+                     Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Confirm:$FALSE | Out-Null
+              }
+       } catch {
+              throw "Failed to find/install NuGet: $($_.Exception.Message)"
        }
 
        # Check & Install requisite modules
        $installedModules = Get-InstalledModule
        Write-Host "Checking modules..."
-       @('Microsoft.Graph.Intune', 'Microsoft.Graph.Groups', 'Microsoft.Graph.Authentication','MSAL.PS', 'WindowsAutoPilotIntune') | ForEach-Object {
+       @('Microsoft.Graph.Authentication','Microsoft.Graph.Intune', 'Microsoft.Graph.Groups','Microsoft.Graph.Identity.DirectoryManagement','MSAL.PS', 'WindowsAutoPilotIntune') | ForEach-Object {
               try {
                      if ($installedModules.Name -notcontains $($_)) {
                             Install-Module -Name $($_) -Force -Confirm:$FALSE
@@ -45,11 +49,11 @@ try {
                             Write-Host "Module $($_) has been found" -ForegroundColor Green
                      }
               } catch {
-                     Write-Error "Failed to install/find modules: $($_)"
+                     throw "Failed to install/find module $($_): $($_.Exception.Message)"
               }
        }
 } catch {
-       throw "$($_)"
+       throw "$($_.Exception.Message)"
 }
 
 try {
@@ -61,8 +65,33 @@ try {
               throw "Tenant $($tenant) could not be found"
        }
 
-       Connect-MgGraph -ClientId 'd1ddf0e4-d672-4dae-b554-9d5bdfd93547' -TenantId $tenantId #-NoWelcome
+       #Connect-MgGraph -ClientId '1950a258-227b-4e31-a9cf-717495945fc2' -TenantId $tenantId -Scopes "Directory.Read.All DeviceManagementServiceConfig.Read.All" #-NoWelcome # Az
+       #Connect-MgGraph -ClientId 'd1ddf0e4-d672-4dae-b554-9d5bdfd93547' -TenantId $tenantId #-NoWelcome # Intune
+
+       $msalTokenSplat = @{
+              TenantId = $tenantid
+              ClientId = "1950a258-227b-4e31-a9cf-717495945fc2" # OfficeGrip Delegated management app
+              UseEmbeddedWebView = $false # Webview2 can't read device compliance
+              RedirectUri = 'http://localhost'
+          }
+      
+          $header = @{
+              "Authorization"          = (Get-MsalToken @msalTokenSplat -Scopes "offline_access https://graph.microsoft.com/Directory.Read.All https://graph.microsoft.com/DeviceManagementServiceConfig.Read.All" -Verbose).CreateAuthorizationHeader()
+              "Content-type"           = "application/json"
+              "X-Requested-With"       = "XMLHttpRequest"
+              "x-ms-client-request-id" = [guid]::NewGuid()
+              "x-ms-correlation-id"    = [guid]::NewGuid()
+          }
+          $tenantInfo = (Invoke-RestMethod -Method GET -Uri "https://graph.microsoft.com/v1.0/organization?`$select=id,displayName,verifiedDomains" -Headers $header).value
+          Write-Host "Authenticated to tenant $($tenantInfo.displayName)"
 } catch {
        throw "Authentication error: $($_.Exception.Message)"
 }
 
+try {
+       $tenantId = $tenantInfo.id
+       $defaultDomain = ($tenantInfo.verifiedDomains | Where-Object { $_.isDefault -eq $true }).name
+       $profile = (Invoke-RestMethod -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/windowsAutopilotDeploymentProfiles?`filter=(extractHardwareHash eq true)" -Headers $header).value
+} catch {
+       throw "$($_.Exception.Message)"
+}
