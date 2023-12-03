@@ -21,6 +21,26 @@ Clear-Host
 
 Write-Host $header
 
+#region
+
+function Save-File ([string]$filename) {
+       [void][System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms")
+   
+       $OpenFileDialog = New-Object System.Windows.Forms.SaveFileDialog
+       $OpenFileDialog.initialDirectory = "C:\Windows\Provisioning\Autopilot"
+       $OpenFileDialog.filter = 'JSON (*.json)|*.json'
+       $OpenFileDialog.FileName = "$filename.json"
+       $result = $OpenFileDialog.ShowDialog()
+   
+       if ($result -NE "OK") { throw "Failed to select save location" }
+       return [pscustomobject]@{
+           path = $OpenFileDialog.filename
+           status = $result
+       }
+}
+
+#endregion
+
 try {
        # Change execution policy
        if ((Get-ExecutionPolicy) -ne "Unrestricted") {
@@ -94,4 +114,10 @@ try {
        $profile = (Invoke-RestMethod -Method GET -Uri "https://graph.microsoft.com/beta/deviceManagement/windowsAutopilotDeploymentProfiles?`filter=(extractHardwareHash eq true)" -Headers $header).value
 } catch {
        throw "$($_.Exception.Message)"
+}
+
+try {
+       $saveFile = Save-File -filename "AutoPilotConfigurationFile"
+} catch {
+
 }
