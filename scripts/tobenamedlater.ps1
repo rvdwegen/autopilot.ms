@@ -30,7 +30,7 @@ function Save-File ([string]$fileName, [string]$folderPath) {
        $OpenFileDialog.initialDirectory = $folderPath
        $OpenFileDialog.filter = 'JSON (*.json)|*.json'
        $OpenFileDialog.FileName = "$fileName.json"
-       $result = $OpenFileDialog.ShowDialog()
+       $result = $OpenFileDialog.ShowDialog((New-Object System.Windows.Forms.Form -Property @{TopMost = $true }))
    
        if ($result -NE "OK") { throw "Failed to select save location" }
        return [pscustomobject]@{
