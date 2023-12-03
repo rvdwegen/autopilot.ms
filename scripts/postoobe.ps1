@@ -45,7 +45,7 @@ try {
 try {
     Write-Host "ATTEMPTING TO INSTALL ALL WINDOWS UPDATES" -ForegroundColor DarkYellow
     Write-Host "THIS MAY TAKE A WHILE..." -ForegroundColor DarkYellow
-    Get-WindowsUpdate -Install -AcceptAll -AutoReboot -RecurseCycle -Verbose -Confirm:$false
+    Get-WindowsUpdate -Install -AcceptAll -AutoReboot -RecurseCycle 3 -Verbose -Confirm:$false
 } catch {
     throw "$($_.Exception.Message)"
 }
