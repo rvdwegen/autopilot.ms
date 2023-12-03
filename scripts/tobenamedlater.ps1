@@ -60,7 +60,7 @@ try {
        # Check & Install requisite modules
        $installedModules = Get-InstalledModule
        Write-Host "Checking modules..."
-       @('Microsoft.Graph.Authentication','Microsoft.Graph.Intune', 'Microsoft.Graph.Groups','Microsoft.Graph.Identity.DirectoryManagement','MSAL.PS', 'WindowsAutoPilotIntune') | ForEach-Object {
+       @('MSAL.PS') | ForEach-Object {
               try {
                      if ($installedModules.Name -notcontains $($_)) {
                             Install-Module -Name $($_) -Force -Confirm:$FALSE
@@ -94,7 +94,7 @@ try {
               UseEmbeddedWebView = $false # Webview2 can't read device compliance
               RedirectUri = 'http://localhost'
           }
-      
+
           $header = @{
               "Authorization"          = (Get-MsalToken @msalTokenSplat -Scopes "offline_access https://graph.microsoft.com/Directory.Read.All https://graph.microsoft.com/DeviceManagementServiceConfig.Read.All" -Verbose).CreateAuthorizationHeader()
               "Content-type"           = "application/json"
@@ -122,6 +122,8 @@ try {
 try {
 
        ###################################################################################
+
+       # This section was blatantly ripped from the WindowsAutoPilotIntune module, full credit goes to its author(s)
        $oobeSettings = $profile.outOfBoxExperienceSettings
 
        # Build up properties

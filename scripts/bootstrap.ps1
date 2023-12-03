@@ -14,7 +14,7 @@ function Show-Menu {
     Write-Host "                                        "
     Write-Host "2: Select '2' to download Get-WindowsAutopilotInfo from the gallery."
     Write-Host "                                        "
-    Write-Host "3: Select '3' to IN DEVELOPMENT."
+    Write-Host "3: Select '3' to generate a Offline Windows Autopilot deployment profile and place it in the autopilot provisioning folder."
     Write-Host "                                        "
 }
 
