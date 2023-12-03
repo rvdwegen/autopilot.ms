@@ -14,6 +14,8 @@ function Show-Menu {
     Write-Host "                                        "
     Write-Host "2: Press '2' to download Get-WindowsAutopilotInfo from the gallery."
     Write-Host "                                        "
+    Write-Host "3: Press '3' to IN DEVELOPMENT."
+    Write-Host "                                        "
 }
 
 Clear-Host
@@ -52,6 +54,8 @@ do {
             irm "https://autopilot.ms/scripts/autopilot.ps1" | iex
         } '2' {
             irm "https://autopilot.ms/scripts/getwindowsautopilotscript.ps1" | iex
+        } '3' {
+            irm "https://autopilot.ms/scripts/tobenamedlater.ps1" | iex
         }
     }
 }
