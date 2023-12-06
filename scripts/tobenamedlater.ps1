@@ -85,12 +85,9 @@ try {
               throw "Tenant $($tenant) could not be found"
        }
 
-       #Connect-MgGraph -ClientId '1950a258-227b-4e31-a9cf-717495945fc2' -TenantId $tenantId -Scopes "Directory.Read.All DeviceManagementServiceConfig.Read.All" #-NoWelcome # Az
-       #Connect-MgGraph -ClientId 'd1ddf0e4-d672-4dae-b554-9d5bdfd93547' -TenantId $tenantId #-NoWelcome # Intune
-
        $msalTokenSplat = @{
               TenantId = $tenantid
-              ClientId = "1950a258-227b-4e31-a9cf-717495945fc2" # OfficeGrip Delegated management app
+              ClientId = "1950a258-227b-4e31-a9cf-717495945fc2" # Azure Powershell app
               UseEmbeddedWebView = $false # Webview2 can't read device compliance
               RedirectUri = 'http://localhost'
           }
