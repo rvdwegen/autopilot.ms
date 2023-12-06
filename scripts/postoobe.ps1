@@ -45,7 +45,13 @@ try {
 try {
     Write-Host "ATTEMPTING TO INSTALL ALL WINDOWS UPDATES" -ForegroundColor DarkYellow
     Write-Host "THIS MAY TAKE A WHILE..." -ForegroundColor DarkYellow
-    Get-WindowsUpdate -Install -AcceptAll -AutoReboot -RecurseCycle 3 -Verbose -Confirm:$false
+    Get-WindowsUpdate -Install -AcceptAll -AutoReboot -RecurseCycle 3 -Confirm:$false
+
+    if ((Get-WURebootStatus).RebootRequired -eq $true) {
+        # Schedule a one time start of get-windowsupdate after reboot
+    } else {
+        Write-Host "UPDATES COMPLETED, WINDOWS SHOULD BE FULLY UP TO DATE" -ForegroundColor Green
+    }
 } catch {
     throw "$($_.Exception.Message)"
 }
