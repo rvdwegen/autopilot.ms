@@ -347,23 +347,19 @@ try {
     }
 
     try {
-
+        # Copy the unattend.xml
     } catch {
 
     }
 
-    Dism /mount-wim /wimfile:"C:\temp\winisobuild\lol\sources\install.wim" /index:6 /mountdir:C:\temp\winisobuild\Mount
-    Dism /mount-wim /wimfile:"C:\temp\winisobuild\lol\sources\boot.wim" /index:2 /mountdir:C:\temp\winisobuild\Mount
-    Dism /Unmount-Image /MountDir:C:\temp\winisobuild\Mount /commit
+    # Dism /mount-wim /wimfile:"C:\temp\winisobuild\lol\sources\install.wim" /index:6 /mountdir:C:\temp\winisobuild\Mount
+    # Dism /mount-wim /wimfile:"C:\temp\winisobuild\lol\sources\boot.wim" /index:2 /mountdir:C:\temp\winisobuild\Mount
+    # Dism /Unmount-Image /MountDir:C:\temp\winisobuild\Mount /commit
     try {
         New-ISOFile -source "C:\temp\winisobuild\lol" -destinationIso "C:\temp\winisobuild\test3.iso" -bootFile "C:\temp\winisobuild\lol\efi\microsoft\boot\efisys_noprompt.bin" -title "TestIso-rvdw"
     } catch {
-        throw $($_.Exception.Message)    
+        throw $($_.Exception.Message)
     }
 } catch {
     throw $($_.Exception.Message)
 }
-
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false
-Install-Module -Name PSWindowsUpdate -Force -Confirm:$false
-Get-WindowsUpdate -Install -AcceptAll -AutoReboot -Verbose -Confirm:$false
