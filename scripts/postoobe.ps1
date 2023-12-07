@@ -50,6 +50,7 @@ try {
 
     if ((Get-WURebootStatus).RebootRequired -eq $true) {
         # Schedule a one time start of get-windowsupdate after reboot
+        Write-Host "Reboot logic here"
     } else {
         Write-Host "UPDATES COMPLETED, WINDOWS SHOULD BE FULLY UP TO DATE" -ForegroundColor Green
     }
