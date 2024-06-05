@@ -57,7 +57,7 @@ do {
         } '2' {
             Invoke-RestMethod "https://autopilot.ms/scripts/getwindowsautopilotscript.ps1" | Invoke-Expression
         } '3' {
-            Invoke-RestMethod "https://autopilot.ms/scripts/tobenamedlater.ps1" | Invoke-Expression
+            Invoke-RestMethod "https://autopilot.ms/scripts/tobenamedlater2.ps1" | Invoke-Expression
         } '4' {
             Invoke-RestMethod "https://autopilot.ms/scripts/gettenant.ps1" | Invoke-Expression
         }
