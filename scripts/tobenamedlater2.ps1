@@ -45,7 +45,9 @@ try {
        # Validate tenant
        try {
               $tenant = Read-Host "Please enter the tenantId or a valid domain of the tenant"
-              $tenantId = (Invoke-RestMethod -Method GET "https://login.windows.net/$tenant/.well-known/openid-configuration").token_endpoint.Split('/')[3]
+              #$tenantId = (Invoke-RestMethod -Method GET "https://login.windows.net/$tenant/.well-known/openid-configuration").token_endpoint.Split('/')[3]
+       
+              $tenantObj = Invoke-RestMethod -Method GET -Uri "https://api.vdwegen.app/api/reverseTenant?tenant=$($tenant)"
        } catch {
               throw "Tenant $($tenant) could not be found"
        }
@@ -58,21 +60,21 @@ try {
   $CloudAssignedAadServerData = @{
       ZeroTouchConfig = @{
           ForcedEnrollment = '1'
-          CloudAssignedTenantDomain = 'ShellCorp.onmicrosoft.com'
+          CloudAssignedTenantDomain = $tenantObj.defaultDomainName
           CloudAssignedTenantUpn = '\'
       }
   } | ConvertTo-Json
 
   $Profile = @{
       Version = 2049
-      CloudAssignedTenantId = "db1e96a8-a3da-442a-930b-235cac24cd5c"
+      CloudAssignedTenantId = $tenantObj.tenantId
       CloudAssignedForcedEnrollment = 1
       CloudAssignedDomainJoinMethod = 0
       CloudAssignedAutopilotUpdateDisabled = 1
       CloudAssignedAutopilotUpdateTimeout = 1800000
       CloudAssignedOobeConfig = 1310
       CloudAssignedAadServerData = $CloudAssignedAadServerData
-      CloudAssignedTenantDomain = "ShellCorp.onmicrosoft.com"
+      CloudAssignedTenantDomain = $tenantObj.defaultDomainName
       ZtdCorrelationId = (New-Guid).Guid
       CloudAssignedDeviceName = "%SERIAL%"
       Comment_File = "Profile Default"
