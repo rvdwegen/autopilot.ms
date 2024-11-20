@@ -14,9 +14,7 @@ function Show-Menu {
     Write-Host "                                        "
     Write-Host "2: Select '2' to download Get-WindowsAutopilotInfo from the gallery."
     Write-Host "                                        "
-    Write-Host "3: Select '3' to generate a Offline Windows Autopilot deployment profile and place it in the autopilot provisioning folder."
-    Write-Host "                                        "
-    Write-Host "4: Select '4' to attempt to detect which tenant the current device is registered to."
+    Write-Host "3: Select '3' to attempt to detect which tenant the current device is registered to."
     Write-Host "                                        "
 }
 
@@ -57,8 +55,6 @@ do {
         } '2' {
             Invoke-RestMethod "https://autopilot.ms/scripts/getwindowsautopilotscript.ps1" | Invoke-Expression
         } '3' {
-            Invoke-RestMethod "https://autopilot.ms/scripts/tobenamedlater2.ps1" | Invoke-Expression
-        } '4' {
             Invoke-RestMethod "https://autopilot.ms/scripts/gettenant.ps1" | Invoke-Expression
         }
     }
