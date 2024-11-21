@@ -149,9 +149,8 @@ $env:logoheader = @"
 Write-Host $env:logoheader
 
 Write-Host "                                        "
-Write-Host "================ $Title ================"
+Write-Host "================ Select your choice below ================"
 Write-Host "                                        "
-Write-Host "        Select your choice below        "
 
 $menuItems = @(
     @(
@@ -172,7 +171,7 @@ switch ($selection) {
     } '2' {
         Invoke-RestMethod "https://autopilot.ms/scripts/gettenant.ps1" | Invoke-Expression
     } '3' {
-        Write-Host "lol"
+        # Empty
     }
 }
 
