@@ -142,10 +142,16 @@ $env:logoheader = @"
                       ============ Autopilot hash bootstrap ============                      
                              Author: https://github.com/rvdwegen
                         Repo: https://github.com/rvdwegen/autopilot.ms
+                        Menu: https://github.com/chrisseroka/ps-menu
 
 "@
 
 Write-Host $env:logoheader
+
+Write-Host "                                        "
+Write-Host "================ $Title ================"
+Write-Host "                                        "
+Write-Host "        Select your choice below        "
 
 $menuItems = @(
     @(

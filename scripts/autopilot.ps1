@@ -1,23 +1,24 @@
 $ProgressPreference = 'SilentlyContinue'
-CLS
+Clear-Host
 
-$header = @"
+# $header = @"
                                                 
-       _         _              _ _       _     ____              _       _                   
-      / \  _   _| |_ ___  _ __ (_) | ___ | |_  | __ )  ___   ___ | |_ ___| |_ _ __ __ _ _ __  
-     / _ \| | | | __/ _ \| '_ \| | |/ _ \| __| |  _ \ / _ \ / _ \| __/ __| __| '__/ _`  | '_ \ 
-    / ___ \ |_| | || (_) | |_) | | | (_) | |_  | |_) | (_) | (_) | |_\__ \ |_| | | (_| | |_) |
-   /_/   \_\__,_|\__\___/| .__/|_|_|\___/ \__| |____/ \___/ \___/ \__|___/\__|_|  \__,_| .__/ 
-                         |_|                                                           |_|    
+#        _         _              _ _       _     ____              _       _                   
+#       / \  _   _| |_ ___  _ __ (_) | ___ | |_  | __ )  ___   ___ | |_ ___| |_ _ __ __ _ _ __  
+#      / _ \| | | | __/ _ \| '_ \| | |/ _ \| __| |  _ \ / _ \ / _ \| __/ __| __| '__/ _`  | '_ \ 
+#     / ___ \ |_| | || (_) | |_) | | | (_) | |_  | |_) | (_) | (_) | |_\__ \ |_| | | (_| | |_) |
+#    /_/   \_\__,_|\__\___/| .__/|_|_|\___/ \__| |____/ \___/ \___/ \__|___/\__|_|  \__,_| .__/ 
+#                          |_|                                                           |_|    
                                                  
                                                 
-                      ============ Autopilot hash bootstrap ============                      
-                             Author: https://github.com/rvdwegen
-                        Repo: https://github.com/rvdwegen/autopilot.ms
+#                       ============ Autopilot hash bootstrap ============                      
+#                              Author: https://github.com/rvdwegen
+#                         Repo: https://github.com/rvdwegen/autopilot.ms
 
-"@
+# "@
 
-Write-Host $header
+# Write-Host $header
+Write-Host $env:logoheader
 
 function Save-File ([string]$filename) {
     [void][System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms")
