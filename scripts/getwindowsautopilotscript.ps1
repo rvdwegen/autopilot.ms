@@ -12,11 +12,8 @@ if (!(Get-InstalledScript | Where-Object { $_.Name -eq "Get-WindowsAutopilotInfo
     Install-Script -Name "Get-WindowsAutopilotInfo" -Force -Confirm:$FALSE
     Write-Host "Get-WindowsAutopilotInfo has been succesfully installed" -ForegroundColor Green
     Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false
-    Write-Host "Executionpolicy has been changed to unrestricted for this process" -ForegroundColor Green
 } else {
-    Write-Host "Get-WindowsAutopilotInfo has been found" -ForegroundColor Green
     Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted -Force -Confirm:$false
-    Write-Host "Executionpolicy has been changed to unrestricted for this process" -ForegroundColor Green
 }
 
 # Show command examples
