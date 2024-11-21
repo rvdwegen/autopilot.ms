@@ -159,13 +159,13 @@ $menuItems = @(
 $selection = menu -menuItems $menuItems -ReturnIndex
 
 switch ($selection) {
-    '1' {
+    '0' {
         Invoke-RestMethod "https://autopilot.ms/scripts/autopilot.ps1" | Invoke-Expression
-    } '2' {
+    } '1' {
         Invoke-RestMethod "https://autopilot.ms/scripts/getwindowsautopilotscript.ps1" | Invoke-Expression
-    } '3' {
+    } '2' {
         Invoke-RestMethod "https://autopilot.ms/scripts/gettenant.ps1" | Invoke-Expression
-    } '4' {
+    } '3' {
         Write-Host "lol"
     }
 }
