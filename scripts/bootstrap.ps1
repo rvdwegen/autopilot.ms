@@ -1,3 +1,11 @@
+# Self-elevate the script if required
+if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+        Write-Host "Auto-elevating process..."
+        $CommandLine = '-noexit irm "https://autopilot.ms/scripts/bootstrap.ps1" | iex'
+        Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
+        exit
+}
+
 $ProgressPreference = 'SilentlyContinue'
 $host.ui.RawUI.WindowTitle = "Autopilot Hash Bootstrap"
 
@@ -20,7 +28,7 @@ function Show-Menu {
 
 Clear-Host
 
-$header = @"
+$env:logoheader = @"
                                                 
        _         _              _ _       _     ____              _       _                   
       / \  _   _| |_ ___  _ __ (_) | ___ | |_  | __ )  ___   ___ | |_ ___| |_ _ __ __ _ _ __  
@@ -36,15 +44,7 @@ $header = @"
 
 "@
 
-Write-Host $header
-
-# Self-elevate the script if required
-if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
-        Write-Host "Auto-elevating process..."
-        $CommandLine = '-noexit irm "https://autopilot.ms/scripts/bootstrap.ps1" | iex'
-        Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
-        exit
-}
+Write-Host $env:logoheader
 
 do {
     Show-Menu
@@ -56,7 +56,9 @@ do {
             Invoke-RestMethod "https://autopilot.ms/scripts/getwindowsautopilotscript.ps1" | Invoke-Expression
         } '3' {
             Invoke-RestMethod "https://autopilot.ms/scripts/gettenant.ps1" | Invoke-Expression
+        } 'exit' {
+            $closeMenu = $true
         }
     }
 }
-until ("nothing")
+until ($closeMenu)
