@@ -6,8 +6,25 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
         exit
 }
 
+# Set Global preferences
 $ProgressPreference = 'SilentlyContinue'
 $host.ui.RawUI.WindowTitle = "Autopilot Hash Bootstrap"
+$env:logoheader = @"
+                                                
+       _         _              _ _       _     ____              _       _                   
+      / \  _   _| |_ ___  _ __ (_) | ___ | |_  | __ )  ___   ___ | |_ ___| |_ _ __ __ _ _ __  
+     / _ \| | | | __/ _ \| '_ \| | |/ _ \| __| |  _ \ / _ \ / _ \| __/ __| __| '__/ _`  | '_ \ 
+    / ___ \ |_| | || (_) | |_) | | | (_) | |_  | |_) | (_) | (_) | |_\__ \ |_| | | (_| | |_) |
+   /_/   \_\__,_|\__\___/| .__/|_|_|\___/ \__| |____/ \___/ \___/ \__|___/\__|_|  \__,_| .__/ 
+                         |_|                                                           |_|    
+                                                 
+                                                
+                      ============ Autopilot hash bootstrap ============                      
+                             Author: https://github.com/rvdwegen
+                        Repo: https://github.com/rvdwegen/autopilot.ms
+                        Menu: https://github.com/chrisseroka/ps-menu
+
+"@
 
 function Show-Menu {
     param (
@@ -129,23 +146,6 @@ function Menu {
 
 Clear-Host
 
-$env:logoheader = @"
-                                                
-       _         _              _ _       _     ____              _       _                   
-      / \  _   _| |_ ___  _ __ (_) | ___ | |_  | __ )  ___   ___ | |_ ___| |_ _ __ __ _ _ __  
-     / _ \| | | | __/ _ \| '_ \| | |/ _ \| __| |  _ \ / _ \ / _ \| __/ __| __| '__/ _`  | '_ \ 
-    / ___ \ |_| | || (_) | |_) | | | (_) | |_  | |_) | (_) | (_) | |_\__ \ |_| | | (_| | |_) |
-   /_/   \_\__,_|\__\___/| .__/|_|_|\___/ \__| |____/ \___/ \___/ \__|___/\__|_|  \__,_| .__/ 
-                         |_|                                                           |_|    
-                                                 
-                                                
-                      ============ Autopilot hash bootstrap ============                      
-                             Author: https://github.com/rvdwegen
-                        Repo: https://github.com/rvdwegen/autopilot.ms
-                        Menu: https://github.com/chrisseroka/ps-menu
-
-"@
-
 Write-Host $env:logoheader
 
 Write-Host "                                        "
@@ -174,20 +174,3 @@ switch ($selection) {
         # Empty
     }
 }
-
-# do {
-#     Show-Menu
-#     $selection = Read-Host "Please make a selection"
-#     switch ($selection) {
-#         '1' {
-#             Invoke-RestMethod "https://autopilot.ms/scripts/autopilot.ps1" | Invoke-Expression
-#         } '2' {
-#             Invoke-RestMethod "https://autopilot.ms/scripts/getwindowsautopilotscript.ps1" | Invoke-Expression
-#         } '3' {
-#             Invoke-RestMethod "https://autopilot.ms/scripts/gettenant.ps1" | Invoke-Expression
-#         } 'exit' {
-#             $closeMenu = $true
-#         }
-#     }
-# }
-# until ($closeMenu)

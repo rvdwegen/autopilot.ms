@@ -1,4 +1,4 @@
-$ProgressPreference = 'SilentlyContinue'
+# Clear terminal and show logo header
 Clear-Host
 Write-Host $env:logoheader
 
