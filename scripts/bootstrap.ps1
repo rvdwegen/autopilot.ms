@@ -24,6 +24,8 @@ function Show-Menu {
     Write-Host "                                        "
     Write-Host "3: Select '3' to attempt to detect which tenant the current device is registered to."
     Write-Host "                                        "
+    Write-Host "Exit: Type 'Exit' to close the menu"
+    Write-Host "                                        "
 }
 
 Clear-Host
